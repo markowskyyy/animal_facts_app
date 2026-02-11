@@ -7,7 +7,7 @@ final sharedPrefsProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError('SharedPreferences must be overridden in main.dart');
 });
 
-// Состояние прогресса
+
 class ProgressNotifier extends StateNotifier<UserProgress> {
   ProgressNotifier(this.ref) : super(UserProgress.empty());
 

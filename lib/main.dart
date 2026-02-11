@@ -7,8 +7,6 @@ import 'providers/progress_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Инициализируем SharedPreferences
   final prefs = await SharedPreferences.getInstance();
 
   runApp(
@@ -26,7 +24,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Загружаем прогресс при старте приложения
+
     ref.read(progressProvider.notifier).loadProgress();
 
     return MaterialApp.router(

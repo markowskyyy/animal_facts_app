@@ -40,14 +40,14 @@ class StatisticsScreen extends ConsumerWidget {
                   childAspectRatio: 0.8,
                   children: [
                     AchievementCard(
-                      title: 'Угадал 10 фактов подряд',
+                      title: 'Изучил 10 животных',
                       icon: '🔥',
-                      isUnlocked: false,
+                      isUnlocked: progress.learnedCount >= 10,
                     ),
                     AchievementCard(
                       title: 'Изучил 5 хищников',
                       icon: '🦁',
-                      isUnlocked: false,
+                      isUnlocked: progress.learnedCount >= 5,
                     ),
                     AchievementCard(
                       title: 'Коллекционер',

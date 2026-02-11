@@ -18,7 +18,6 @@ class DetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final animal = ref.watch(animalByIdProvider(animalId));
-    final progress = ref.watch(progressProvider);
 
     if (animal == null) {
       return const Scaffold(
@@ -27,14 +26,15 @@ class DetailScreen extends ConsumerWidget {
     }
 
     return Scaffold(
+      backgroundColor: AppColors.white,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             expandedHeight: 300,
             pinned: true,
             stretch: true,
-            // backgroundColor: AppColors.background,
-            backgroundColor: Colors.transparent,
+            elevation: 0,
+            backgroundColor: AppColors.background,
             flexibleSpace: FlexibleSpaceBar(
               background: Image.asset(
                 animal.imageUrl,
@@ -54,7 +54,6 @@ class DetailScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Gap(24),
-
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
@@ -62,9 +61,7 @@ class DetailScreen extends ConsumerWidget {
                       style: AppTextStyles.headline,
                     ),
                   ),
-
                   const Gap(16),
-
                   InfoSectionWidget(
                     icon: Icons.lightbulb_outline,
                     title: 'Интересный факт',
@@ -83,20 +80,7 @@ class DetailScreen extends ConsumerWidget {
                     content: animal.features,
                     color: AppColors.green,
                   ),
-
                   const Gap(32),
-
-                  // Padding(
-                  //   padding: const EdgeInsets.all(20),
-                  //   child: CustomButton.primary(
-                  //     text: 'Пройти викторину про ${animal.name}',
-                  //     icon: Icons.casino,
-                  //     onTap: () {
-                  //       context.push('/quiz/animal/${animal.id}');
-                  //     },
-                  //   ),
-                  // ),
-                  // const Gap(20),
                 ],
               ),
             ),

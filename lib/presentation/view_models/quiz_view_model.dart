@@ -3,12 +3,14 @@ import 'package:animal_facts_app/providers/animal_provider.dart';
 import 'package:animal_facts_app/providers/progress_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+
 class QuizState {
   final Animal currentAnimal;
   final List<String> options;
   final int? selectedIndex;
   final bool? isCorrect;
   final bool isAnswered;
+  final int correctAnswerIndex;
 
   QuizState({
     required this.currentAnimal,
@@ -16,6 +18,7 @@ class QuizState {
     this.selectedIndex,
     this.isCorrect,
     required this.isAnswered,
+    required this.correctAnswerIndex,
   });
 
   QuizState copyWith({
@@ -24,6 +27,7 @@ class QuizState {
     int? selectedIndex,
     bool? isCorrect,
     bool? isAnswered,
+    int? correctAnswerIndex,
   }) {
     return QuizState(
       currentAnimal: currentAnimal ?? this.currentAnimal,
@@ -31,11 +35,11 @@ class QuizState {
       selectedIndex: selectedIndex ?? this.selectedIndex,
       isCorrect: isCorrect ?? this.isCorrect,
       isAnswered: isAnswered ?? this.isAnswered,
+      correctAnswerIndex: correctAnswerIndex ?? this.correctAnswerIndex,
     );
   }
 }
 
-// Простой ViewModel
 class QuizViewModel extends StateNotifier<QuizState> {
   QuizViewModel({required this.ref, required String? animalId})
       : super(_initState(ref, animalId));
@@ -55,16 +59,17 @@ class QuizViewModel extends StateNotifier<QuizState> {
       animal = animals[DateTime.now().millisecondsSinceEpoch % animals.length];
     }
 
-    final options = _generateOptions(animal);
+    final (options, correctIndex) = _generateOptions(animal);
 
     return QuizState(
       currentAnimal: animal,
       options: options,
       isAnswered: false,
+      correctAnswerIndex: correctIndex,
     );
   }
 
-  static List<String> _generateOptions(Animal animal) {
+  static (List<String>, int) _generateOptions(Animal animal) {
     final correctFact = animal.interestingFact;
 
     final shuffledWrongs = List<String>.from(animal.wrongFacts)..shuffle();
@@ -72,22 +77,23 @@ class QuizViewModel extends StateNotifier<QuizState> {
 
     final options = [correctFact, ...selectedWrongs];
     options.shuffle();
-    return options;
+
+    final correctIndex = options.indexOf(correctFact);
+
+    return (options, correctIndex);
   }
 
   void selectAnswer(int index) {
     if (state.isAnswered) return;
 
-    final isCorrect = state.options[index] == state.currentAnimal.interestingFact;
+    final isCorrect = index == state.correctAnswerIndex;
 
     state = state.copyWith(
       selectedIndex: index,
       isCorrect: isCorrect,
       isAnswered: true,
     );
-  }
 
-  void nextQuestion() {
     ref.read(progressProvider.notifier).addQuizResult(
       state.currentAnimal.name,
       state.isCorrect ?? false,
@@ -98,15 +104,20 @@ class QuizViewModel extends StateNotifier<QuizState> {
         state.currentAnimal.id,
       );
     }
+  }
+
+  void nextQuestion() {
+
 
     final animals = ref.read(allAnimalsProvider);
     final newAnimal = animals[DateTime.now().millisecondsSinceEpoch % animals.length];
-    final newOptions = _generateOptions(newAnimal);
+    final (newOptions, newCorrectIndex) = _generateOptions(newAnimal);
 
     state = QuizState(
       currentAnimal: newAnimal,
       options: newOptions,
       isAnswered: false,
+      correctAnswerIndex: newCorrectIndex,
     );
   }
 }

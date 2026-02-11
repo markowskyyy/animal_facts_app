@@ -1,5 +1,6 @@
 import 'package:animal_facts_app/domain/entities/user_progress.dart';
 import 'package:animal_facts_app/providers/animal_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,7 +30,9 @@ class ProgressNotifier extends StateNotifier<UserProgress> {
       history: [],
     );
 
-    _syncLearnedStatus();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _syncLearnedStatus();
+    });
   }
 
   void _syncLearnedStatus() {

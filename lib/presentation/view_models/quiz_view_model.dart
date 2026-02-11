@@ -96,7 +96,7 @@ class QuizViewModel extends StateNotifier<QuizState> {
 
     ref.read(progressProvider.notifier).addQuizResult(
       state.currentAnimal.name,
-      state.isCorrect ?? false,
+      isCorrect,
     );
 
     if (state.isCorrect == true) {

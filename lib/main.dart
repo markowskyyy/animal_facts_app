@@ -9,13 +9,22 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
 
+  final container = ProviderContainer(
+    overrides: [
+      sharedPrefsProvider.overrideWithValue(prefs),
+    ],
+  );
+
+  await container.read(progressProvider.notifier).loadProgress();
+
+
   runApp(
-    ProviderScope(
-      overrides: [
-        sharedPrefsProvider.overrideWithValue(prefs),
-      ],
+    UncontrolledProviderScope(
+      container: container,
       child: const MyApp(),
     ),
+
+
   );
 }
 
@@ -24,8 +33,6 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-    ref.read(progressProvider.notifier).loadProgress();
 
     return MaterialApp.router(
       title: 'AnimalFacts',

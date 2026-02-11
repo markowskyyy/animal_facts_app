@@ -2,10 +2,8 @@ import 'package:animal_facts_app/core/design.dart';
 import 'package:animal_facts_app/presentation/ui_kit/frequent/info_section_widget.dart';
 import 'package:animal_facts_app/presentation/ui_kit/ui_kit.dart';
 import 'package:animal_facts_app/providers/animal_provider.dart';
-import 'package:animal_facts_app/providers/progress_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class DetailScreen extends ConsumerWidget {
   final String animalId;
@@ -28,17 +26,36 @@ class DetailScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       body: CustomScrollView(
+        physics: const ClampingScrollPhysics(),
         slivers: [
           SliverAppBar(
             expandedHeight: 300,
             pinned: true,
-            stretch: true,
+            stretch: false,
             elevation: 0,
             backgroundColor: AppColors.background,
             flexibleSpace: FlexibleSpaceBar(
               background: Image.asset(
                 animal.imageUrl,
                 fit: BoxFit.cover,
+              ),
+            ),
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 12),
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(12)
+                ),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new_sharp,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                ),
               ),
             ),
           ),

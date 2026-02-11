@@ -8,16 +8,13 @@ import 'package:animal_facts_app/presentation/pages/statistics_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-
-// Ключи для StatefulShellRoute
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final appRouter = GoRouter(
   initialLocation: '/catalog',
   navigatorKey: _rootNavigatorKey,
-  debugLogDiagnostics: true, // для отладки, в релизе убрать
+  debugLogDiagnostics: true,
   routes: [
-    // Главная навигация с BottomNavigationBar
     StatefulShellRoute.indexedStack(
       pageBuilder: (context, state, navigationShell) {
         return NoTransitionPage(
@@ -26,7 +23,6 @@ final appRouter = GoRouter(
         );
       },
       branches: [
-        // Вкладка 1: Каталог
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -36,7 +32,6 @@ final appRouter = GoRouter(
                 child: CatalogScreen(),
               ),
               routes: [
-                // Детали животного
                 GoRoute(
                   path: 'detail/:animalId',
                   name: 'detail',
@@ -78,7 +73,6 @@ final appRouter = GoRouter(
           ],
         ),
 
-        // Вкладка 3: Статистика
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -91,7 +85,6 @@ final appRouter = GoRouter(
           ],
         ),
 
-        // Вкладка 4: Коллекция
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -104,7 +97,6 @@ final appRouter = GoRouter(
           ],
         ),
 
-        // Вкладка 5: Настройки/Еще
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -121,7 +113,6 @@ final appRouter = GoRouter(
   ],
 );
 
-// Виджет с BottomNavigationBar
 class ScaffoldWithNavBar extends StatelessWidget {
   const ScaffoldWithNavBar({
     super.key,

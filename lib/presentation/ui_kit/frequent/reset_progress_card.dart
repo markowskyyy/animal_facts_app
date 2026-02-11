@@ -1,5 +1,6 @@
 import 'package:animal_facts_app/core/design.dart';
 import 'package:animal_facts_app/presentation/ui_kit/ui_kit.dart';
+import 'package:animal_facts_app/presentation/view_models/quiz_view_model.dart';
 import 'package:animal_facts_app/providers/progress_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -124,6 +125,7 @@ class ResetProgressCard extends ConsumerWidget {
               ),
               onPressed: () async {
                 Navigator.pop(context);
+                ref.read(quizViewModelProvider(null).notifier).nextQuestion();
                 await ref.read(progressProvider.notifier).resetProgress();
 
                 if (context.mounted) {

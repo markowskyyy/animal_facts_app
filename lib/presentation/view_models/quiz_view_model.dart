@@ -108,7 +108,6 @@ class QuizViewModel extends StateNotifier<QuizState> {
 
   void nextQuestion() {
 
-
     final animals = ref.read(allAnimalsProvider);
     final newAnimal = animals[DateTime.now().millisecondsSinceEpoch % animals.length];
     final (newOptions, newCorrectIndex) = _generateOptions(newAnimal);
@@ -116,6 +115,20 @@ class QuizViewModel extends StateNotifier<QuizState> {
     state = QuizState(
       currentAnimal: newAnimal,
       options: newOptions,
+      isAnswered: false,
+      correctAnswerIndex: newCorrectIndex,
+    );
+  }
+
+  void resetCurrentQuestion() {
+    if (state.isAnswered == false) return; // Нечего сбрасывать
+
+    final (newOptions, newCorrectIndex) = _generateOptions(state.currentAnimal);
+
+    state = state.copyWith(
+      options: newOptions,
+      selectedIndex: null,
+      isCorrect: null,
       isAnswered: false,
       correctAnswerIndex: newCorrectIndex,
     );
